@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="YOLO11 Pothole Detection dashboard for road image processing." />
+    <title>YOLO11 Pothole Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="upload.css" />
+    <link rel="stylesheet" href="camera.css" />
+    <link rel="stylesheet" href="results.css" />
+    <link rel="stylesheet" href="modules.css" />
+    <link rel="stylesheet" href="location.css" />
+    <link rel="stylesheet" href="auth.css" />
+    <link rel="stylesheet" href="image-management.css" />
+    <link rel="stylesheet" href="detection-settings.css" />
+    <link rel="stylesheet" href="visibility.css" />
+  </head>
+  <body>
+    <section class="auth-screen" id="authScreen" aria-labelledby="authTitle">
+      <div class="auth-brand"><span class="brand-mark">P</span><span>YOLO11 Pothole Detection</span></div>
+      <article class="panel auth-card">
+        <p class="eyebrow">Local detection workspace</p>
+        <h1 id="authTitle">Sign in</h1>
+        <p class="muted" id="authDescription">Sign in to access your pothole detection workspace.</p>
+        <div class="auth-tabs" role="tablist" aria-label="Account access">
+          <button class="auth-tab active" id="showSignIn" type="button" role="tab" aria-selected="true">Sign in</button>
+          <button class="auth-tab" id="showRegister" type="button" role="tab" aria-selected="false">Create account</button>
+        </div>
+        <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
+        <form class="auth-form" id="signInForm">
+          <label>Email address<input type="email" name="email" autocomplete="username" required maxlength="320" /></label>
+          <label>Password<input type="password" name="password" autocomplete="current-password" required /></label>
+          <button class="primary-button" type="submit">Sign in</button>
+        </form>
+        <form class="auth-form" id="registerForm" hidden>
+          <label>Your name<input type="text" name="display_name" autocomplete="name" required minlength="1" maxlength="160" /></label>
+          <label>Email address<input type="email" name="email" autocomplete="email" required maxlength="320" /></label>
+          <label>Password <small>At least 8 characters</small><input type="password" name="password" autocomplete="new-password" required minlength="8" maxlength="72" /></label>
+          <button class="primary-button" type="submit">Create account</button>
+          <small class="auth-footnote">Self-registration is available in development workspaces.</small>
+        </form>
+      </article>
+    </section>
+    <div class="app-shell" id="appShell" hidden>
+      <aside class="sidebar" id="sidebar">
+        <div class="brand"><span class="brand-mark">P</span><span>YOLO11 Pothole Detection</span></div>
+        <div class="sidebar-scroll">
+          <p class="nav-label">Workspace</p>
+          <nav class="nav-list" aria-label="Workspace navigation">
+            <button class="nav-item active" data-page="Overview"><span class="nav-icon">⌂</span>Overview</button>
+            <button class="nav-item" data-page="Image Upload"><span class="nav-icon">↑</span>Image Upload</button>
+            <button class="nav-item" data-page="Live Camera Capture"><span class="nav-icon">◉</span>Live Camera Capture</button>
+            <button class="nav-item" data-page="Detection Results"><span class="nav-icon">▣</span>Detection Results</button>
+            <button class="nav-item" data-page="Detection History"><span class="nav-icon">◷</span>Detection History</button>
+            <button class="nav-item" data-page="Image Management"><span class="nav-icon">▤</span>Image Management</button>
+            <button class="nav-item" data-page="Pothole Locations"><span class="nav-icon">⌖</span>Pothole Locations</button>
+            <button class="nav-item" data-page="Analytics"><span class="nav-icon">◒</span>Analytics</button>
+            <button class="nav-item" data-page="Reports"><span class="nav-icon">▤</span>Reports</button>
+          </nav>
+          <p class="nav-label">Administration</p>
+          <nav class="nav-list" aria-label="Administration navigation">
+            <button class="nav-item" data-page="User Management" data-admin-only><span class="nav-icon">♙</span>User Management</button>
+            <button class="nav-item" data-page="Processing Jobs"><span class="nav-icon">◌</span>Processing Jobs</button>
+            <button class="nav-item" data-page="YOLO11 Model Information"><span class="nav-icon">◇</span>YOLO11 Model Info</button>
+            <button class="nav-item" data-page="System Monitoring"><span class="nav-icon">⌁</span>System Monitoring</button>
+            <button class="nav-item" data-page="Notifications" data-admin-only><span class="nav-icon">♢</span>Notifications</button>
+            <button class="nav-item" data-page="Audit Logs" data-admin-only><span class="nav-icon">☷</span>Audit Logs</button>
+            <button class="nav-item" data-page="Profile"><span class="nav-icon">◯</span>Profile</button>
+            <button class="nav-item" data-page="Settings"><span class="nav-icon">⚙</span>Settings</button>
+          </nav>
+        </div>
+        <div class="sidebar-footer"><div class="help-card"><span class="help-icon">◇</span><div><strong>YOLO11</strong><small>Road image processing</small></div></div><small>Local detection workspace</small></div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="menu-button" id="menuToggle" aria-label="Toggle navigation">☰</button>
+          <div class="heading-group"><div class="breadcrumbs"><span>Workspace</span><span>/</span><strong id="breadcrumbCurrent">Overview</strong></div><h1 id="pageTitle">YOLO11 Pothole Detection</h1></div>
+          <div class="top-actions"><label class="search-box"><span>⌕</span><input id="globalSearch" type="search" placeholder="Search processing jobs…" /></label><div class="profile-chip"><span class="avatar" id="userAvatar">P</span><span class="profile-copy"><strong id="userDisplayName">Workspace account</strong><small id="userEmail"></small></span></div><button class="secondary-button" id="signOut" type="button">Sign out</button></div>
+        </header>
+
+        <div class="content-wrap">
+          <section class="welcome-row" id="welcomeRow"><div><p class="eyebrow" id="dashboardDate"></p><h2>Detection overview</h2><p class="muted">Current image and inference data from this workspace.</p></div><div class="status-pill"><span class="status-dot"></span><span id="dataConnectionLabel">Loading workspace data</span></div></section>
+
+          <section class="upload-page" id="uploadPage" hidden>
+            <div class="upload-heading"><div><p class="eyebrow">Workspace / Image Upload</p><h2>Submit road imagery</h2><p class="muted">Upload images for YOLO11 pothole detection.</p></div><span class="status-pill"><span class="status-dot"></span>Backend processing</span></div>
+            <div class="upload-grid">
+              <article class="panel upload-panel"><div class="dropzone" id="dropzone"><input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden><div class="upload-icon">↑</div><h3>Drop images here</h3><p>or choose files from your device</p><button class="primary-button" id="chooseFiles">Choose images</button><small>PNG, JPG or WEBP · up to 10 MB per image</small></div><div class="location-capture"><div><strong>Attach current device location <span>Optional</span></strong><p>This uses your device position at upload time and applies it to every selected image. Only attach it if it matches where those photos were taken; original photo GPS metadata is not read.</p><small id="locationStatus" role="status" aria-live="polite">No location attached.</small></div><div class="location-buttons"><button class="secondary-button" id="captureLocation" type="button">⌖ Capture location</button><button class="text-button" id="clearLocation" type="button" hidden>Remove</button></div></div><div class="upload-actions"><span id="uploadSummary">No images selected</span><button class="primary-button" id="startUpload" disabled>Upload and process</button></div></article>
+              <article class="panel upload-info"><div class="panel-header"><div><h3>Upload checklist</h3><p>Prepare clear road imagery for better review.</p></div></div><ul class="checklist"><li><span>01</span><div><strong>Use a clear frame</strong><small>Keep the road surface visible and in focus.</small></div></li><li><span>02</span><div><strong>Include context</strong><small>Keep suspected potholes visible in the frame.</small></div></li><li><span>03</span><div><strong>Review before submitting</strong><small>Remove unrelated or duplicate images.</small></div></li></ul><div class="upload-note"><strong>Processing</strong><p>Each uploaded image is stored and processed as a separate job. Results are based on the configured YOLO11 model.</p></div></article>
+            </div>
+            <article class="panel selected-files"><div class="panel-header"><div><h3>Selected images</h3><p id="selectedFilesHelp">Choose images to preview them here.</p></div><button class="text-button" id="clearFiles" hidden>Clear all</button></div><div class="preview-grid" id="previewGrid"><div class="empty-state">No images selected.</div></div></article>
+          </section>
+
+          <section class="camera-page" id="cameraPage" hidden><div class="upload-heading"><div><p class="eyebrow">Workspace / Live Camera Capture</p><h2>Live camera capture</h2><p class="muted">Capture from a connected camera when a camera source is configured.</p></div></div><article class="panel module-empty"><strong>Camera source is not configured</strong><span>Use Image Upload to submit road images for processing.</span></article></section>
+
+          <section class="results-page" id="resultsPage" hidden>
+            <div class="upload-heading"><div><p class="eyebrow">Workspace / Detection Results</p><h2>Detection result</h2><p class="muted" id="resultFilename">Select a completed processing job to view its result.</p></div><a class="secondary-button" id="downloadResult" hidden>Download annotated image</a></div>
+            <div class="result-grid" id="resultContent" hidden>
+              <article class="panel image-panel"><div class="panel-header"><div><h3>Image comparison</h3><p>Original and model annotation</p></div></div><div class="comparison-grid"><div><div class="result-image original-image"><img id="originalImage" alt="Original uploaded road image"></div><small>Original image</small></div><div><div class="result-image annotated-image"><img id="annotatedImage" alt="YOLO11 annotated road image"></div><small>Annotated image</small></div></div></article>
+              <article class="panel result-summary"><div class="panel-header"><div><h3>Detection summary</h3><p>Stored inference result</p></div><span class="status-badge completed" id="resultStatus">Completed</span></div><div class="summary-stat"><strong id="resultCount">—</strong><span>Potholes detected</span></div><div class="summary-list"><div><span>Highest confidence</span><strong id="resultConfidence">—</strong></div><div><span>Severity</span><strong id="resultSeverity">Not calculated</strong></div><div><span>Processing time</span><strong id="resultTime">—</strong></div><div><span>Model</span><strong id="resultModel">—</strong></div></div></article>
+            </div>
+            <article class="panel module-empty" id="resultEmpty"><strong>No detection selected</strong><span>Open a completed job from the activity list to see its actual images and results.</span></article>
+          </section>
+
+          <section class="module-page" id="modulePage" hidden></section>
+
+          <section class="metric-grid" id="metricGrid" aria-label="Workspace metrics">
+            <article class="metric-card"><div class="metric-icon teal">▧</div><div><p>Total images uploaded</p><strong id="metricImages">—</strong><small>Stored in this workspace</small></div></article>
+            <article class="metric-card"><div class="metric-icon amber">⌁</div><div><p>Potholes detected</p><strong id="metricPotholes">—</strong><small>From completed model results</small></div></article>
+            <article class="metric-card"><div class="metric-icon slate">✓</div><div><p>Completed jobs</p><strong id="metricCompleted">—</strong><small>Processing jobs marked completed</small></div></article>
+            <article class="metric-card"><div class="metric-icon rose">◌</div><div><p>Active jobs</p><strong id="metricActive">—</strong><small>Queued or currently processing</small></div></article>
+          </section>
+
+          <section class="dashboard-grid" id="chartGrid">
+            <article class="panel chart-panel"><div class="panel-header"><div><h3>Pothole detection activity</h3><p>Counts from completed inference results</p></div><select id="activityRange" aria-label="Activity range"><option value="7">Last 7 days</option><option value="30">Last 30 days</option></select></div><div class="chart-area"><div class="y-axis" id="activityAxis"></div><div class="bars" id="activityChart"></div></div><p class="empty-state chart-empty" id="activityEmpty" hidden>No completed detections in this period.</p></article>
+            <article class="panel distribution-panel"><div class="panel-header"><div><h3>Processing job status</h3><p>Current status counts from the database</p></div></div><div class="donut-wrap"><div class="donut" id="jobStatusDonut"><div class="donut-center"><strong id="jobTotal">0</strong><small>Jobs</small></div></div><div class="legend" id="jobStatusLegend"></div></div><p class="empty-state" id="jobStatusEmpty" hidden>No processing jobs yet.</p></article>
+          </section>
+
+          <section class="dashboard-grid lower-grid" id="systemGrid">
+            <article class="panel status-panel"><div class="panel-header"><div><h3>System status</h3><p>Live connectivity and model readiness</p></div><button class="refresh-button" id="refreshStatus">↻ Refresh</button></div><div class="status-list"><div class="status-row"><span class="service-icon">◫</span><div><strong>Frontend application</strong><small>Dashboard</small></div><span class="connected"><i></i>Operational</span></div><div class="status-row"><span class="service-icon">⌁</span><div><strong>Backend API</strong><small>Detection service</small></div><span id="backendStatus" class="not-connected"><i></i>Checking</span></div><div class="status-row"><span class="service-icon">▦</span><div><strong>Database</strong><small>Image and job records</small></div><span id="databaseStatus" class="not-connected"><i></i>Checking</span></div><div class="status-row"><span class="service-icon">◇</span><div><strong>YOLO11 model</strong><small>Inference weights</small></div><span id="modelStatus" class="not-connected"><i></i>Checking</span></div></div></article>
+            <article class="panel trend-panel"><div class="panel-header"><div><h3>Monthly detections</h3><p>Counts from completed inference results</p></div></div><div class="bars monthly-bars" id="monthlyChart"></div><p class="empty-state chart-empty" id="monthlyEmpty" hidden>No completed detections recorded.</p></article>
+          </section>
+
+          <section class="panel activity-panel" id="activityPanel"><div class="panel-header"><div><h3>Recent processing jobs</h3><p>Image and inference status from this workspace</p></div><div class="table-actions"><select id="statusFilter" aria-label="Filter by job status"><option value="all">All statuses</option><option value="queued">Queued</option><option value="processing">Processing</option><option value="completed">Completed</option><option value="failed">Failed</option></select><button class="secondary-button" id="exportButton">Export CSV</button></div></div><div class="table-wrap"><table><thead><tr><th>Job ID</th><th>Image filename</th><th>Submitted</th><th>Potholes</th><th>Status</th><th>Action</th></tr></thead><tbody id="activityTable"></tbody></table><div class="empty-state" id="emptyState">No processing jobs have been submitted.</div></div><div class="table-footer"><span id="recordCount">No jobs</span><button class="text-button" id="viewHistory">View processing history →</button></div></section>
+
+          <footer class="footer"><span>YOLO11 Pothole Detection</span><span id="footerStatus">Waiting for backend data</span></footer>
+        </div>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.venv/
+.venv*/
+**/.venv/
+**/.venv*/
+node_modules/
+**/node_modules/
+Pothole and normal dataset/
+outputs/
+work/
+*.onnx
+*.pt
+__pycache__/
+.pytest_cache/

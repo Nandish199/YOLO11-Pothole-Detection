@@ -1,0 +1,13 @@
+.venv/
+.venv*/
+__pycache__/
+.pytest_cache/
+.env
+storage/*.db
+storage/*.db-*
+storage/uploads/*
+!storage/uploads/.gitkeep
+storage/results/*
+!storage/results/.gitkeep
+model/*.onnx
+model/*.pt
